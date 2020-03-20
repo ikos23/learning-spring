@@ -25,7 +25,7 @@ jobs:
       - run: mvn -f spring-petclinic-clone-kotlin/pom.xml clean package
       
       - store_test_results:
-          path: /spring-petclinic-clone-kotlin/target/surefire-reports
+          path: ~/learning-spring/spring-petclinic-clone-kotlin/target/surefire-reports
       
       - store_artifacts:
-          path: /pring-petclinic-clone-kotlin/target/spring-petclinic-clone-kotlin-0.0.1-SNAPSHOT.jar
+          path: ~/learning-spring/spring-petclinic-clone-kotlin/target/spring-petclinic-clone-kotlin-0.0.1-SNAPSHOT.jar
