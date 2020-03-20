@@ -13,16 +13,16 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: spring-petclinic-clone-kotlin-{{ checksum "/spring-petclinic-clone-kotlin/pom.xml" }}
+          key: spring-petclinic-clone-kotlin-{{ checksum "spring-petclinic-clone-kotlin/pom.xml" }}
       
-      - run: mvn -f /spring-petclinic-clone-kotlin/pom.xml dependency:go-offline
+      - run: mvn -f spring-petclinic-clone-kotlin/pom.xml dependency:go-offline
       
       - save_cache:
           paths:
             - ~/.m2
           key: spring-petclinic-clone-kotlin-{{ checksum "spring-petclinic-clone-kotlin/pom.xml" }}
       
-      - run: mvn -f /spring-petclinic-clone-kotlin/pom.xml package
+      - run: mvn -f spring-petclinic-clone-kotlin/pom.xml package
       
       - store_test_results:
           path: target/surefire-reports
