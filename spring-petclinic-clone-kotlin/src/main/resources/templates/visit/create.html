@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Pet Clinic Persons</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/app.css}"/>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+        * {
+             box-sizing: border-box;
+        }
+
+    </style>
+    <script>
+        function selectOwner() {
+            const ownerId = document.getElementById("ownersList").value;
+            axios
+                .get(`/api/owners/${ownerId}/pets`)
+                .then(function (resp) {
+                    console.log(resp.data);
+                    petsJsonToUIElements(resp.data);
+                })
+                .catch(function (err) {
+                    console.log(err.response);
+                });
+        }
+
+        function petsJsonToUIElements(data) {
+            const petsList = document.getElementById("petsList");
+            petsList.innerHTML = '';
+            data.forEach(pet => {
+                const node = document.createElement("option");
+                node.value = pet.id;
+                node.appendChild(document.createTextNode(pet.type + ' ' + pet.name));
+                petsList.appendChild(node);
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="main-block">
+    <div class="nav-bar">
+        <ul>
+            <li><a th:href="@{'/'}">Home</a></li>
+            <li class="nav-active"><a th:href="@{'/visits'}">Visits</a></li>
+            <li><a th:href="@{'/vets'}">Vets</a></li>
+            <li><a th:href="@{'/owners'}">Owners</a></li>
+        </ul>
+    </div>
+    <div>
+        <h3 th:text="${'Add new visit'}">Add new visit</h3>
+    </div>
+    <div>
+        <div>
+            <form method="post" action="/visits" enctype="multipart/form-data">
+                <div class="form-element">
+                    <div class="label">
+                        <label for="ownersList">Select Owner</label>
+                    </div>
+                    <div class="element">
+                        <select id="ownersList" onchange="selectOwner()">
+                            <option value=""></option>
+                            <option th:each="o : ${owners}"
+                                    th:value="${o.id}"
+                                    th:text="${o.firstName + ' ' + o.lastName}">???</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="label">
+                        <label for="ownersList">Select Pet</label>
+                    </div>
+                    <div class="element">
+                        <select id="petsList" name="petId">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="label">
+                        <label for="visitDate">Visit Date</label>
+                    </div>
+                    <div class="element">
+                        <input type="date" id="visitDate" name="visitDate"/>
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="label">
+                        <label for="description">Description</label>
+                    </div>
+                    <div class="element">
+                        <textarea id="description"
+                                  name="description"
+                                  rows="3" cols="50"
+                                  maxlength="30"></textarea>
+                    </div>
+                </div>
+                <div class="form-element">
+                    <button type="submit">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

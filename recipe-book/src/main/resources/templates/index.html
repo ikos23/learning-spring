@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe Book</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}"/>
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 th:text="${'List of your favourite recipes ^_^'}">Recipes</h3>
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th>Id</th>
+                    <th>Description</th>
+                    <th>Time to prepare</th>
+                    <th>Time to cook</th>
+                    <th>Source</th>
+                    <th>URL</th>
+                    <th>Note</th>
+                    <th>Difficulty</th>
+                    <th>Image</th>
+                    <th><a class="btn btn-primary btn-sm" href="/recipe/add" role="button">Add</a></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="r : ${recipes}">
+                    <td th:text="${r.id}"></td>
+                    <td th:text="${r.description}"></td>
+                    <td th:text="${r.prepTime}"></td>
+                    <td th:text="${r.cookTime}"></td>
+                    <td th:text="${r.source}"></td>
+                    <td th:text="${r.url}"></td>
+                    <td th:text="${r.note.note}"></td>
+                    <td th:text="${r.difficulty}"></td>
+                    <td>
+                        <img th:src="@{'/recipe/' + ${r.id} + '/image'}" alt="No image so far"
+                             width="200" height="150">
+                    </td>
+                    <td>
+                        <a class="btn btn-link btn-sm" th:href="@{'/recipe/' + ${r.id} + '/upload'}" role="button">Upload image</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

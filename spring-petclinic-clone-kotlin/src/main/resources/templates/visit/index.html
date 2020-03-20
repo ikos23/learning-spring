@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Pet Clinic Index</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/app.css}"/>
+</head>
+<body>
+<div class="main-block">
+    <div class="nav-bar">
+        <ul>
+            <li><a th:href="@{'/'}">Home</a></li>
+            <li class="nav-active"><a th:href="@{'/visits'}">Visits</a></li>
+            <li><a th:href="@{'/vets'}">Vets</a></li>
+            <li><a th:href="@{'/owners'}">Owners</a></li>
+            <li style="float:right"><a th:href="@{'/visits/create'}">Add Visit</a></li>
+        </ul>
+    </div>
+    <div>
+        <h3 th:text="${'Visits'}">visits</h3>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div th:each="visit : ${visits}" style="padding-bottom: 20px;">
+                <div>
+                    Visit Date: <span th:text="${visit.visitDate}">???</span>
+                </div>
+                <div>
+                    Description: <span th:text="${visit.description}">???</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Pet Clinic Error</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/app.css}"/>
+</head>
+<body>
+<div class="error-block">
+    <div class="nav-bar">
+        <ul>
+            <li><a th:href="@{'/'}">Home</a></li>
+            <li><a th:href="@{'/visits'}">Visits</a></li>
+            <li><a th:href="@{'/vets'}">Vets</a></li>
+            <li><a th:href="@{'/owners'}">Owners</a></li>
+        </ul>
+    </div>
+    <div>
+        <h2 th:text="${'Keep calm :)'}">Keep calm :)</h2>
+    </div>
+    <div>
+        <h4>Something went wrong and here is what we know about it</h4>
+    </div>
+    <div>
+        <div>
+            <span style="font-weight:bold">Status: </span><span th:text="${status}">status</span>
+        </div>
+        <div>
+            <span style="font-weight:bold">Message: </span><span th:text="${message}">msg</span>
+        </div>
+        <div>
+            <span style="font-weight:bold">Request: </span><span th:text="${path}">path</span>
+        </div>
+        <div style="margin-top: 10px">
+            <a th:href="@{/}">Just go home</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

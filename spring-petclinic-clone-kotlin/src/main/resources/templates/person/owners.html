@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Pet Clinic Persons</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/app.css}"/>
+
+</head>
+<body>
+<div class="main-block">
+    <div class="nav-bar">
+        <ul>
+            <li><a th:href="@{'/'}">Home</a></li>
+            <li><a th:href="@{'/visits'}">Visits</a></li>
+            <li><a th:href="@{'/vets'}">Vets</a></li>
+            <li class="nav-active"><a th:href="@{'/owners'}">Owners</a></li>
+            <li style="float:right"><a th:href="@{'/owners/create'}">New Owner</a></li>
+        </ul>
+    </div>
+    <div>
+        <div>
+            <h3>Owners</h3>
+        </div>
+        <table style="width:100%; border-collapse: collapse">
+            <tr style="background-color: #e7e7e7">
+                <th style="padding: 5px">First Name</th>
+                <th>Last Name</th>
+                <th>City</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Profile</th>
+            </tr>
+            <tr th:each="o : ${owners}" style="text-align: center">
+                <td th:text="${o.firstName}" style="padding: 5px">???</td>
+                <td th:text="${o.lastName}">???</td>
+                <td th:text="${o.city}">???</td>
+                <td th:text="${o.address}">???</td>
+                <td th:text="${o.telephone}">???</td>
+                <td><a th:href="@{'/owners/' + ${o.id} + '/profile'}">View</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

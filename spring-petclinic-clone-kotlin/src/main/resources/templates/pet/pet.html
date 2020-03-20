@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Pet Clinic Index</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/app.css}"/>
+</head>
+<body>
+<div class="main-block">
+    <div class="nav-bar">
+        <ul>
+            <li><a th:href="@{'/'}">Home</a></li>
+            <li><a th:href="@{'/visits'}">Visits</a></li>
+            <li><a th:href="@{'/vets'}">Vets</a></li>
+            <li><a th:href="@{'/owners'}">Owners</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div>
+                <span><a th:href="@{'/owners/' + ${pet.ownerId} + '/pets/' + ${pet.id} + '/delete'}">Delete Me</a></span>
+            </div>
+            <div>
+                <h3 th:text="${'Pet: ' + pet.name}">pet</h3>
+            </div>
+            <div>
+                Name: <span th:text="${pet.name}" style="font-weight: bold">???</span>
+            </div>
+            <div>
+                And I am: <span th:text="${pet.type}" style="font-weight: bold">???</span>
+            </div>
+            <div>
+                Born: <span th:text="${pet.birthDate}" style="font-weight: bold">???</span>
+            </div>
+            <div>
+                <span>
+                    My Owner:
+                    <a th:href="@{'/owners/' + ${pet.ownerId} + '/profile'}">
+                        <span th:text="${owner.firstName + ' ' + owner.lastName}" style="font-weight: bold">???</span>
+                    </a>
+                </span>
+            </div>
+            <div>
+                <h3 th:text="${'Visits History'}">Visits History</h3>
+            </div>
+            <div th:each="visit : ${pet.visits}">
+                <div>
+                    Visit Date: <span th:text="${visit.visitDate}">???</span>
+                </div>
+                <div>
+                    Description: <span th:text="${visit.description}">???</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Pet Clinic Persons</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/app.css}"/>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+    </style>
+
+    <script>
+        // "add new pet" stuff calls rest api
+        // here is simple js to make it work + handle validations
+
+        function cleanUpAllValidations() {
+            const errs = document.getElementsByClassName("petValidationError");
+            for (let i = errs.length - 1; i >= 0; --i) {
+                errs[i].remove();
+            }
+        }
+
+        function createErrNode(text) {
+            const node = document.createElement("div");
+            node.style.color = "red";
+            node.classList.add("petValidationError");
+            node.appendChild(document.createTextNode(text));
+            return node;
+        }
+
+        function addPet() {
+            const apiURI = `/api/pets`;
+            const payload = {
+                name: document.getElementById("name").value,
+                type: document.getElementById("type").value,
+                ownerId: document.getElementById("ownerId").value,
+                birthDate: document.getElementById("birthDate").value
+            };
+
+            axios
+                .post(apiURI, payload)
+                .then(function (resp) {
+                    console.log(resp);
+                    // the easiest way to refresh list of pets on the page
+                    location.reload();
+                })
+                .catch(function (err) {
+                    if (err.response.status === 400) {
+                        // validation errors
+                        cleanUpAllValidations();
+                        const errors = err.response.data;
+                        for (let [key, val] of Object.entries(errors)) {
+                            val.forEach(msg => {
+                                document
+                                    .getElementById(key)
+                                    .parentElement
+                                    .appendChild(createErrNode(msg));
+                            });
+                        }
+                    }
+                });
+        }
+    </script>
+</head>
+<body>
+<div class="main-block">
+    <div class="nav-bar">
+        <ul>
+            <li><a th:href="@{'/'}">Home</a></li>
+            <li><a th:href="@{'/visits'}">Visits</a></li>
+            <li><a th:href="@{'/vets'}">Vets</a></li>
+            <li class="nav-active"><a th:href="@{'/owners'}">Owners</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div>
+                <h3 th:text="${'Owner: ' + owner.firstName + ' ' + owner.lastName}">Owner Full Name</h3>
+            </div>
+            <div>
+                First Name: <span th:text="${owner.firstName}" style="font-weight: bold">???</span>
+            </div>
+            <div>
+                Last Name: <span th:text="${owner.lastName}" style="font-weight: bold">???</span>
+            </div>
+            <div>
+                Address: <span th:text="${owner.address}" style="font-weight: bold">???</span>
+            </div>
+            <div>
+                City: <span th:text="${owner.city}" style="font-weight: bold">???</span>
+            </div>
+            <div>
+                Telephone: <span th:text="${owner.telephone}" style="font-weight: bold">???</span>
+            </div>
+            <div>
+                <h4>Pets (<span th:text="${owner.pets.size()}">-1</span>):</h4>
+                <ul>
+                    <li th:each="pet : ${owner.pets}">
+                        <span th:text="${pet.type}">type</span>:
+                        <span th:text="${pet.name}" style="font-weight: bold">name</span>, born:
+                        <span th:text="${pet.birthDate}" style="font-weight: bold">bd</span>
+                        <span><a th:href="@{'/owners/' + ${owner.id} + '/pets/' + ${pet.id}}">view</a></span>
+                        <span><a th:href="@{'/owners/' + ${owner.id} + '/pets/' + ${pet.id} + '/delete'}">delete</a></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="column" style="background-color: #f3f3f3">
+            <div>
+                <h3>Add Pet</h3>
+            </div>
+            <div>
+                <div class="form-element">
+                    <div class="label">
+                        <label for="name">Name</label>
+                    </div>
+                    <div class="element">
+                        <input type="text" id="name" name="name" style="width: 70%"/>
+                    </div>
+                    <div class="error">
+
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="label">
+                        <label for="type">Type</label>
+                    </div>
+                    <div class="element">
+                        <select id="type" name="type" style="width: 70%">
+                            <option value=""></option>
+                            <option value="Cat">Cat</option>
+                            <option value="Dog">Dog</option>
+                            <option value="Rabbit">Rabbit</option>
+                            <option value="Hamster">Hamster</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="label">
+                        <label for="birthDate">Birth Date</label>
+                    </div>
+                    <div class="element">
+                        <input type="date" id="birthDate" name="birthDate"/>
+                    </div>
+                </div>
+                <div>
+                    <input type="hidden" id="ownerId" th:value="${owner.id}"/>
+                </div>
+                <div class="form-element">
+                    <button type="button" onclick="addPet(); return false;">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

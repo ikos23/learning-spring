@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Pet Clinic Persons</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/app.css}"/>
+
+    <style>
+        * {
+             box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<div class="main-block">
+    <div class="nav-bar">
+        <ul>
+            <li class="nav-active"><a th:href="@{'/'}">Home</a></li>
+            <li><a th:href="@{'/visits'}">Visits</a></li>
+            <li><a th:href="@{'/vets'}">Vets</a></li>
+            <li><a th:href="@{'/owners'}">Owners</a></li>
+        </ul>
+    </div>
+    <div style="padding-left: 5px;">
+        <div>
+            <h2 th:text="${'List of persons'}">List of persons text</h2>
+            <a th:href="@{'/persons/createOwner'}">Add new owner</a>
+        </div>
+        <h4 th:text="${'You can also search person on this page.'}">Search text</h4>
+        <div class="search-section">
+            <form action="/persons/search" method="post" enctype="multipart/form-data">
+                <label for="firstName">First Name:</label> <input type="text" id="firstName" name="firstName" value=""/>
+                <label for="lastName">Last Name:</label> <input type="text" id="lastName" name="lastName" value="">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column" style="background-color: #fcfcfc">
+            <div>
+                <h5>Owners:</h5>
+            </div>
+            <div th:each="o : ${owners}" class="person-card">
+                <div>
+                    First Name: <span th:text="${o.firstName}">???</span>
+                </div>
+                <div>
+                    Last Name: <span th:text="${o.lastName}">???</span>
+                </div>
+                <div>
+                    City: <span th:text="${o.city}">???</span>
+                </div>
+                <div>
+                    Address: <span th:text="${o.address}">???</span>
+                </div>
+                <div>
+                    Phone: <span th:text="${o.telephone}">???</span>
+                </div>
+                <div>
+                    <a th:href="@{'/persons/owner/' + ${o.id} + '/profile'}">My Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="column" style="background-color: #f8f8f8">
+            <div>
+                <h5>Vets:</h5>
+            </div>
+            <div th:each="vet : ${vets}" class="person-card">
+                <div>
+                    First Name: <span th:text="${vet.firstName}">???</span>
+                </div>
+                <div>
+                    Last Name: <span th:text="${vet.lastName}">???</span>
+                </div>
+                <div>
+                    <a th:href="@{'/persons/vet/' + ${vet.id} + '/profile'}">My Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

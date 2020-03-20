@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Pet Clinic Persons</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/app.css}"/>
+
+    <style>
+        * {
+             box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<div class="main-block">
+    <div class="nav-bar">
+        <ul>
+            <li><a th:href="@{'/'}">Home</a></li>
+            <li><a th:href="@{'/visits'}">Visits</a></li>
+            <li><a th:href="@{'/vets'}">Vets</a></li>
+            <li class="nav-active"><a th:href="@{'/owners'}">Owners</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div>
+                <h3>Add Owner</h3>
+            </div>
+            <form method="post" action="/owners/create" enctype="multipart/form-data">
+                <div class="form-element">
+                    <div class="label">
+                        <label for="firstName">First Name</label>
+                    </div>
+                    <div class="element">
+                        <input type="text" id="firstName" name="firstName" style="width: 70%"/>
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="label">
+                        <label for="lastName">Last Name</label>
+                    </div>
+                    <div class="element">
+                        <input type="text" id="lastName" name="lastName" style="width: 70%"/>
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="label">
+                        <label for="address">Address</label>
+                    </div>
+                    <div class="element">
+                        <input type="text" id="address" name="address" style="width: 70%"/>
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="label">
+                        <label for="city">City</label>
+                    </div>
+                    <div class="element">
+                        <input type="text" id="city" name="city" style="width: 70%"/>
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="label">
+                        <label for="telephone">Telephone</label>
+                    </div>
+                    <div class="element">
+                        <input type="text" id="telephone" name="telephone"/>
+                    </div>
+                </div>
+                <div class="form-element">
+                    <button type="submit">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

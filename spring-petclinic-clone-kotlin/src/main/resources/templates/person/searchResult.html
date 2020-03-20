@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Pet Clinic Persons</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/app.css}"/>
+
+    <style>
+        * {
+             box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<div class="main-block">
+    <div>
+        <h2 th:text="${'Found ' + persons.size() + ' persons:'}">Found</h2>
+    </div>
+    <div class="row">
+        <div class="column" style="background-color: #fcfcfc">
+            <div th:each="person : ${persons}" class="person-card">
+                <div>
+                    First Name: <span th:text="${person.data.firstName}" style="font-weight: bold">???</span>
+                </div>
+                <div>
+                    Last Name: <span th:text="${person.data.lastName}" style="font-weight: bold">???</span>
+                </div>
+                <div>
+                    Who I am: <span th:text="${person.type}" style="font-weight: bold">???</span>
+                </div>
+                <div>
+                    <a th:href="@{'/persons/' + ${person.data.id} + '/profile?type=' + ${person.type} }">My Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

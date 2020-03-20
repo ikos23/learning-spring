@@ -1,0 +1,94 @@
+.search-section {
+    margin-bottom: 15px;
+}
+
+.person-card {
+    border: 1px solid #e7e7e7;
+    width: 50%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.nav {
+}
+
+.nav-item {
+    float: left;
+    padding: 5px 10px 10px 0px;
+}
+
+.nav-item:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.form-element {
+    width: 100%;
+    padding: 10px;
+}
+
+.label {
+
+}
+
+.element {
+
+}
+
+.error-block {
+    width: 1000px;
+    margin: auto;
+    background-color: #fff5f5;
+    padding: 20px;
+}
+
+.main-block {
+    width: 1000px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f1fbff;
+    min-height: 350px;
+}
+
+div.nav-bar > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+div.nav-bar > ul > li {
+    float: left;
+}
+
+div.nav-bar > ul > li > a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+div.nav-bar > ul > li > a:hover:not(.active) {
+    background-color: #111;
+}
+
+.nav-active {
+    background-color: #4CAF50;
+}
