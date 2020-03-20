@@ -1,7 +1,7 @@
 HELP.md
 target/
 
-!.mvn/
+.mvn/
 
 .apt_generated
 .classpath
