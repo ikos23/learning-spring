@@ -41,5 +41,5 @@ jobs:
           path: ~/learning-spring/spring-petclinic-clone-kotlin/target/jacoco.exec
           
       - codecov/upload:
-          file: ~/learning-spring/spring-petclinic-clone-kotlin/target/jacoco.exec
+          file: ~/learning-spring/spring-petclinic-clone-kotlin/target/my-reports/jacoco.xml
 
