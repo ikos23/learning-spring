@@ -1,7 +1,7 @@
 HELP.md
 target/
 
-!.mvn/
+.mvn/
 
 .apt_generated
 .classpath
@@ -25,3 +25,4 @@ target/
 build/
 
 .vscode/
+src/main/kotlin/com/ivk23/petclinic/kotlin/config/
