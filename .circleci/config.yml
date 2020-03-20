@@ -15,7 +15,7 @@ jobs:
       - restore_cache:
           key: spring-petclinic-clone-kotlin-{{ checksum "/spring-petclinic-clone-kotlin/pom.xml" }}
       
-      - run: mvn dependency:go-offline
+      - run: mvn -f /spring-petclinic-clone-kotlin/pom.xml dependency:go-offline
       
       - save_cache:
           paths:
