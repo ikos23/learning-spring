@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  codecov: codecov/codecov@1.0.2
+
 jobs:
   build:
     
@@ -32,7 +35,10 @@ jobs:
           
       - store_artifacts:
           path: ~/learning-spring/spring-petclinic-clone-kotlin/target/my-reports
-          destination:  ~/learning-spring/spring-petclinic-clone-kotlin/code_coverage_report
+          destination: code_coverage_report
                 
       - store_artifacts:
           path: ~/learning-spring/spring-petclinic-clone-kotlin/target/jacoco.exec
+          
+      - codecov/upload:
+          file: {{ ~/learning-spring/spring-petclinic-clone-kotlin/target/jacoco.exec }}
