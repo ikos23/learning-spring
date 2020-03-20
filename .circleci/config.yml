@@ -31,4 +31,4 @@ jobs:
           path: ~/learning-spring/spring-petclinic-clone-kotlin/target/spring-petclinic-clone-kotlin-0.0.1-SNAPSHOT.jar
           
       - store_artifacts:
-          path: ~/learning-spring/spring-petclinic-clone-kotlin/target/jacoco.exec
+          path: ~/learning-spring/spring-petclinic-clone-kotlin/target
