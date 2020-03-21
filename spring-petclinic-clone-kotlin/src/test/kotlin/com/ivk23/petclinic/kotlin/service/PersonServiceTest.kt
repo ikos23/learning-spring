@@ -181,8 +181,8 @@ class PersonServiceTest : SpringBootTestBase() {
         val ownerById = classUnderTest.getOwnerById(created.id!!)
 
         // then
-        assertFalse { owner1 == ownerById }
-        assertFalse { created == ownerById }
+        assertNotSame(owner1, ownerById)
+        assertNotSame(created, ownerById)
         assertEquals(created.id, ownerById.id)
         assertEquals("getOwnerById_FirstName", ownerById.firstName)
         assertEquals("getOwnerById_LastName", ownerById.lastName)
