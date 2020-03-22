@@ -16,9 +16,6 @@ open class Person : BaseEntity() {
     @Column(name = "last_name")
     open var lastName: String? = null
 
-    override fun toString(): String {
-        return "Person(firstName=$firstName, lastName=$lastName)"
-    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -38,5 +35,8 @@ open class Person : BaseEntity() {
         return result
     }
 
+    override fun toString(): String {
+        return "Person(id=$id, firstName=$firstName, lastName=$lastName)"
+    }
 
 }
