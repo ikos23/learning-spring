@@ -118,4 +118,22 @@ class PersonService(
                         { throw ResourceNotFoundException("Owner (id=$ownerId) not found.") }
                 )
     }
+
+    /**
+     * Update only certain fields of owner.
+     */
+    @Transactional
+    fun patch(ownerId: Long, owner: Owner): Owner {
+        val ownerFromDB = ownerRepo
+                .findById(ownerId)
+                .orElseThrow { ResourceNotFoundException("Owner (id=$ownerId) not found.") }
+
+        if (owner.firstName != null) ownerFromDB.firstName = owner.firstName
+        if (owner.lastName != null) ownerFromDB.lastName = owner.lastName
+        if (owner.city != null) ownerFromDB.city = owner.city
+        if (owner.address != null) ownerFromDB.address = owner.address
+        if (owner.telephone != null) ownerFromDB.telephone = owner.telephone
+
+        return ownerFromDB
+    }
 }

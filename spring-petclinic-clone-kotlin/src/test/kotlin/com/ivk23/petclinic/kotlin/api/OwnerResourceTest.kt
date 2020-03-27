@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import java.time.LocalDate
@@ -182,6 +183,36 @@ class OwnerResourceTest : SpringBootTestBase() {
                 .andExpect(jsonPath("$[0].name").value("Lola 1"))
                 .andExpect(jsonPath("$[0].type").value("Crocodile"))
                 .andExpect(jsonPath("$[0].birthDate").value("2020-01-14"))
+    }
+
+    @Test
+    fun `patch owner`() {
+        val o2 = Owner()
+        o2.firstName = "Aaaaaaa"
+        o2.lastName = "Bbbbbbb"
+        val json = objectMapper.writeValueAsString(o2)
+
+        mockMvc.patch("/api/owners/${testOwner.id}") {
+            contentType = MediaType.APPLICATION_JSON
+            content = json
+        }.andExpect {
+            status { isOk }
+            jsonPath("$.firstName").value("Aaaaaaa")
+            jsonPath("$.lastName").value("Bbbbbbb")
+            jsonPath("$.address").value("Duck ave. 123")
+            jsonPath("$.city").value("TheCity")
+            jsonPath("$.telephone").value("123-555-123")
+        }
+
+        val fromDB = ownerRepository.findById(testOwner.id!!)
+        println("fetched from db: $fromDB")
+
+        assertNotSame(testOwner, fromDB.get())
+        assertEquals("Aaaaaaa", fromDB.get().firstName)
+        assertEquals("Bbbbbbb", fromDB.get().lastName)
+        assertEquals("Duck ave. 123", fromDB.get().address)
+        assertEquals("TheCity", fromDB.get().city)
+        assertEquals("123-555-123", fromDB.get().telephone)
     }
 
 }

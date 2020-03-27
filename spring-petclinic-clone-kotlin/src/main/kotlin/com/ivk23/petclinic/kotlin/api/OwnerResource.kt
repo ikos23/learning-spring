@@ -35,12 +35,17 @@ class OwnerResource(private val personService: PersonService) {
     @PutMapping
     fun update(@Validated @RequestBody owner: Owner) = personService.update(owner)
 
+    @PatchMapping("/{id}")
+    fun patch(@PathVariable("id") ownerId: Long,
+              @RequestBody owner: Owner): Owner =
+            personService.patch(ownerId, owner)
+
     @DeleteMapping("/{id}")
     fun delete(@PathVariable("id") ownerId: Long) =
             personService.delete(ownerId)
 
     @GetMapping("/{id}/pets")
     fun getOwnerPets(@PathVariable("id") id: Long): Set<Pet> {
-        return personService.getOwnerById(id).pets;
+        return personService.getOwnerById(id).pets
     }
 }

@@ -23,4 +23,25 @@ class Visit : BaseEntity() {
     @Column(name = "pet_id")
     var petId: Long? = null
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Visit) return false
+        if (!super.equals(other)) return false
+
+        if (visitDate != other.visitDate) return false
+        if (description != other.description) return false
+        if (petId != other.petId) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + (visitDate?.hashCode() ?: 0)
+        result = 31 * result + (description?.hashCode() ?: 0)
+        result = 31 * result + (petId?.hashCode() ?: 0)
+        return result
+    }
+
+
 }
