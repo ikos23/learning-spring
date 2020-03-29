@@ -28,7 +28,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: mysql
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/petclinic_dev
-      SPRING_JPA_DDL_AUTO: create
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
     networks:
       - my-network
 
