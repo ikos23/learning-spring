@@ -49,7 +49,4 @@ class PersonController(private val personService: PersonService) {
         return modelAndView
     }
 
-
-
-
 }

@@ -10,8 +10,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.format.support.FormattingConversionService
 import org.springframework.http.MediaType
@@ -92,8 +91,28 @@ class VisitControllerTest {
             content = "petId=123&visitDate=2020-12-12&description=descr"
         }.andExpect {
             status { is3xxRedirection }
+            view {
+                name("redirect:/visits")
+            }
         }
 
         verify(visitService).create(visit)
+    }
+
+    @Test
+    fun `post create validation errors case`() {
+        val visit = Visit()
+
+        mockMvc.post("/visits") {
+            contentType = MediaType.APPLICATION_FORM_URLENCODED
+            content = "description=descr"
+        }.andExpect {
+            status { is3xxRedirection }
+            view {
+                name("redirect:/visits/create")
+            }
+        }
+
+        verify(visitService, never()).create(visit)
     }
 }

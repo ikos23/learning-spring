@@ -1,0 +1,35 @@
+# Docker Engine 18.06.0+
+# The app needs to be packaged first (mvn clean package)
+# in order for this to run.
+version: "3.7"
+
+networks:
+  my-network:
+    name: "my-network"
+
+services:
+  mysql:
+    build:
+      context: ./docker/mysql
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
+    networks:
+      - my-network
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    ports:
+      - "8888:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_PROFILES_ACTIVE: mysql
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/petclinic_dev
+      SPRING_JPA_DDL_AUTO: create
+    networks:
+      - my-network
+
+
