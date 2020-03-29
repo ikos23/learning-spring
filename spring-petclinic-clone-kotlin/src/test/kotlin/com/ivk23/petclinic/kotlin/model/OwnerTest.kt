@@ -28,7 +28,7 @@ class OwnerTest {
         o2.address = "aaaaa"
         o2.city = "cccc"
 
-        assertEquals(o1, o2)
+        assertTrue(o1.equals(o2))
     }
 
     @Test
@@ -46,6 +46,7 @@ class OwnerTest {
         val map = mapOf(Pair(o1, "OWNER 1"))
 
         assertEquals("OWNER 1", map[o2])
+        assertEquals(o1.hashCode(), o2.hashCode())
     }
 
 }
