@@ -2,6 +2,7 @@ package com.ivk23.petclinic.kotlin.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ivk23.petclinic.kotlin.SpringBootTestBase
+import com.ivk23.petclinic.kotlin.api.Constants.Companion.API_V1_PREFIX
 import com.ivk23.petclinic.kotlin.model.Owner
 import com.ivk23.petclinic.kotlin.model.Pet
 import org.junit.jupiter.api.AfterEach
@@ -31,6 +32,7 @@ import kotlin.test.assertTrue
 class OwnerResourceTest : SpringBootTestBase() {
 
     lateinit var testOwner: Owner
+    val ownerResourceBaseURL = "/$API_V1_PREFIX/owners"
 
     @BeforeEach
     fun before() {
@@ -55,7 +57,7 @@ class OwnerResourceTest : SpringBootTestBase() {
 
     @Test
     fun `get all owners`() {
-        mockMvc.get("/api/owners") {
+        mockMvc.get(ownerResourceBaseURL) {
             accept = MediaType.APPLICATION_JSON
         }.andExpect {
             status { isOk }
@@ -72,7 +74,7 @@ class OwnerResourceTest : SpringBootTestBase() {
 
     @Test
     fun `get owner by id`() {
-        mockMvc.perform(get("/api/owners/${testOwner.id}"))
+        mockMvc.perform(get("$ownerResourceBaseURL/${testOwner.id}"))
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.firstName").value("Donald"))
                 .andExpect(jsonPath("$.lastName").value("Duck"))
@@ -83,7 +85,7 @@ class OwnerResourceTest : SpringBootTestBase() {
 
     @Test
     fun `get by id owner not found`() {
-        mockMvc.perform(get("/api/owners/99999"))
+        mockMvc.perform(get("$ownerResourceBaseURL/99999"))
                 .andExpect(status().isNotFound)
                 .andExpect(content().string("Owner (id=99999) not found."))
     }
@@ -100,7 +102,7 @@ class OwnerResourceTest : SpringBootTestBase() {
         val json = objectMapper.writeValueAsString(o2)
         println("create owner test payload: $json")
 
-        mockMvc.perform(post("/api/owners")
+        mockMvc.perform(post(ownerResourceBaseURL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isCreated)
@@ -115,7 +117,7 @@ class OwnerResourceTest : SpringBootTestBase() {
 
         val json = ObjectMapper().writeValueAsString(o3)
 
-        mockMvc.perform(post("/api/owners")
+        mockMvc.perform(post(ownerResourceBaseURL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isBadRequest)
@@ -132,7 +134,7 @@ class OwnerResourceTest : SpringBootTestBase() {
         val json = ObjectMapper().writeValueAsString(testOwner)
         println("update owner test payload: $json")
 
-        mockMvc.perform(put("/api/owners")
+        mockMvc.perform(put(ownerResourceBaseURL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isOk)
@@ -151,21 +153,21 @@ class OwnerResourceTest : SpringBootTestBase() {
 
     @Test
     fun `delete owner`() {
-        mockMvc.perform(delete("/api/owners/${testOwner.id}"))
+        mockMvc.perform(delete("$ownerResourceBaseURL/${testOwner.id}"))
                 .andExpect(status().isOk)
         assertTrue { ownerRepository.findById(testOwner.id!!).isEmpty }
     }
 
     @Test
     fun `delete owner not found`() {
-        mockMvc.perform(delete("/api/owners/77777"))
+        mockMvc.perform(delete("$ownerResourceBaseURL/77777"))
                 .andExpect(status().isNotFound)
                 .andExpect(content().string("Owner (id=77777) not found."))
     }
 
     @Test
     fun `get owner pets`() {
-        mockMvc.perform(get("/api/owners/${testOwner.id}/pets"))
+        mockMvc.perform(get("$ownerResourceBaseURL/${testOwner.id}/pets"))
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$").isEmpty)
 
@@ -177,7 +179,7 @@ class OwnerResourceTest : SpringBootTestBase() {
         petRepository.saveAndFlush(lolaPet)
 
         // let's check now :)
-        mockMvc.perform(get("/api/owners/${testOwner.id}/pets"))
+        mockMvc.perform(get("$ownerResourceBaseURL/${testOwner.id}/pets"))
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].name").value("Lola 1"))
@@ -192,7 +194,7 @@ class OwnerResourceTest : SpringBootTestBase() {
         o2.lastName = "Bbbbbbb"
         val json = objectMapper.writeValueAsString(o2)
 
-        mockMvc.patch("/api/owners/${testOwner.id}") {
+        mockMvc.patch("$ownerResourceBaseURL/${testOwner.id}") {
             contentType = MediaType.APPLICATION_JSON
             content = json
         }.andExpect {

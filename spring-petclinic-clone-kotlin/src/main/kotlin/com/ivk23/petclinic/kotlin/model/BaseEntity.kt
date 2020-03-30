@@ -1,5 +1,6 @@
 package com.ivk23.petclinic.kotlin.model
 
+import io.swagger.annotations.ApiModelProperty
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -10,6 +11,7 @@ open class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(hidden = true)
     open var id: Long? = null
 
     override fun equals(other: Any?): Boolean {

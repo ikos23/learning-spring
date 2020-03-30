@@ -13,8 +13,10 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.format.support.FormattingConversionService
+import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
 @ExtendWith(MockitoExtension::class)
@@ -80,5 +82,33 @@ class PersonControllerTest {
                 }
 
         verify(personService).getVetById(1L)
+    }
+
+    @Test
+    fun search() {
+        val owner = Owner()
+        owner.firstName = "lol"
+        owner.lastName = "yyy"
+
+        val vet = Owner()
+        vet.firstName = "lol"
+        vet.lastName = "rrr"
+
+        `when`(personService.getAllBy("lol", null)).thenReturn(setOf(owner, vet))
+
+        mockMvc.post("/persons/search") {
+            contentType = MediaType.APPLICATION_FORM_URLENCODED
+            content = "firstName=lol"
+        }.andExpect {
+            status { isOk }
+            view {
+                name("person/searchResult")
+            }
+            model {
+                attribute("persons", hasSize<Set<Any>>(2))
+            }
+        }
+
+        verify(personService).getAllBy("lol", null)
     }
 }

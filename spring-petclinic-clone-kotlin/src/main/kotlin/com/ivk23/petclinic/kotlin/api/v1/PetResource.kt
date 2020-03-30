@@ -1,9 +1,11 @@
-package com.ivk23.petclinic.kotlin.api
+package com.ivk23.petclinic.kotlin.api.v1
 
+import com.ivk23.petclinic.kotlin.api.Constants.Companion.API_V1_PREFIX
 import com.ivk23.petclinic.kotlin.exception.ResourceNotFoundException
 import com.ivk23.petclinic.kotlin.model.Pet
 import com.ivk23.petclinic.kotlin.repository.OwnerRepository
 import com.ivk23.petclinic.kotlin.repository.PetRepository
+import io.swagger.annotations.Api
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.PageRequest
@@ -18,9 +20,11 @@ import java.util.*
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 
+
+@Api(description = "This is Pet Resource API")
 @Validated
 @RestController
-@RequestMapping("/api/pets")
+@RequestMapping("$API_V1_PREFIX/pets")
 class PetResource(private val petRepo: PetRepository,
                   private val ownerRepo: OwnerRepository) {
 

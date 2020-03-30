@@ -1,10 +1,13 @@
 package com.ivk23.petclinic.kotlin.model
 
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 
 @Entity
 @Table(name = "owners")
+@ApiModel(description = "Owner v1 model.")
 class Owner : Person() {
 
     @Column(name = "address")
@@ -17,6 +20,7 @@ class Owner : Person() {
     @Column(name = "telephone")
     var telephone: String? = null
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     var pets: MutableSet<Pet> = HashSet()

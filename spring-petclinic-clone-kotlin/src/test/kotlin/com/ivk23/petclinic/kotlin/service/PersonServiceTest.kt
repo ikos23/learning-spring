@@ -248,6 +248,30 @@ class PersonServiceTest : SpringBootTestBase() {
         assertFalse { ownerRepository.findById(created.id!!).isPresent }
     }
 
+    @Test
+    fun patch() {
+        // given
+        val owner1 = createTestOwner("patch")
+        val created = ownerRepository.saveAndFlush(owner1)
+
+        val newOwner = Owner()
+        newOwner.firstName = "New First Name"
+        newOwner.lastName = "New Last Name"
+        newOwner.address = "New Address"
+        newOwner.city = "New City"
+        newOwner.telephone = "000 111 222"
+
+        val patched = classUnderTest.patch(created.id!!, newOwner)
+
+        assertNotSame(newOwner, patched)
+        assertEquals("New First Name", patched.firstName)
+        assertEquals("New Last Name", patched.lastName)
+        assertEquals("New Address", patched.address)
+        assertEquals("New City", patched.city)
+        assertEquals("000 111 222", patched.telephone)
+
+    }
+
     private fun createTestOwner(
             test: String,
             firstName: String = "${test}_FirstName",

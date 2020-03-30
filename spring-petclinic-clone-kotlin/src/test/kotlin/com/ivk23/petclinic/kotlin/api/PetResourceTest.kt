@@ -1,16 +1,13 @@
 package com.ivk23.petclinic.kotlin.api
 
 import com.ivk23.petclinic.kotlin.SpringBootTestBase
+import com.ivk23.petclinic.kotlin.api.Constants.Companion.API_V1_PREFIX
 import com.ivk23.petclinic.kotlin.model.Owner
 import com.ivk23.petclinic.kotlin.model.Pet
-import com.ivk23.petclinic.kotlin.repository.OwnerRepository
-import com.ivk23.petclinic.kotlin.repository.PetRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import java.time.LocalDate
@@ -24,6 +21,7 @@ import kotlin.test.assertTrue
 class PetResourceTest : SpringBootTestBase() {
 
     lateinit var testOwner: Owner
+    val petResourceBaseUrl = "/${API_V1_PREFIX}/pets"
 
     @BeforeEach
     fun setUp() {
@@ -51,7 +49,7 @@ class PetResourceTest : SpringBootTestBase() {
         persistTestPet("Foo", "Dog")
         persistTestPet("Bar", "Hamster")
 
-        mockMvc.perform(get("/api/pets"))
+        mockMvc.perform(get(petResourceBaseUrl))
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].name").value("Bar"))
@@ -72,7 +70,7 @@ class PetResourceTest : SpringBootTestBase() {
         persistTestPet("Alfred", "Dog")
         persistTestPet("Cookie", "Cat", of(2019, 11, 16))
 
-        mockMvc.perform(get("/api/pets?page=2&size=2"))
+        mockMvc.perform(get("$petResourceBaseUrl?page=2&size=2"))
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].name").value("Cookie"))
@@ -87,7 +85,7 @@ class PetResourceTest : SpringBootTestBase() {
 
     @Test
     fun `get pets with invalid page and size params`() {
-        mockMvc.perform(get("/api/pets?page=0&size=5000"))
+        mockMvc.perform(get("$petResourceBaseUrl?page=0&size=5000"))
                 .andExpect(status().isBadRequest)
                 .andExpect(jsonPath("$.['get.page']").value("must be greater than or equal to 1"))
                 .andExpect(jsonPath("$.['get.size']").value("must be less than or equal to 100"))
@@ -97,7 +95,7 @@ class PetResourceTest : SpringBootTestBase() {
     fun `get pet by id`() {
         val cookie = persistTestPet("Cookie", "Cat", of(2019, 11, 16))
 
-        mockMvc.perform(get("/api/pets/${cookie.id}"))
+        mockMvc.perform(get("$petResourceBaseUrl/${cookie.id}"))
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.name").value("Cookie"))
                 .andExpect(jsonPath("$.type").value("Cat"))
@@ -107,7 +105,7 @@ class PetResourceTest : SpringBootTestBase() {
 
     @Test
     fun `get pet by id not found`() {
-        mockMvc.perform(get("/api/pets/99999"))
+        mockMvc.perform(get("$petResourceBaseUrl/99999"))
                 .andExpect(status().isNotFound)
                 .andExpect(content().string("Pet (id=99999) not found."))
     }
@@ -117,7 +115,7 @@ class PetResourceTest : SpringBootTestBase() {
 
         val petJson = getPetAsJson("Barry", "Dog", testOwner.id!!, of(2020, FEBRUARY, 2))
 
-        mockMvc.perform(post("/api/pets")
+        mockMvc.perform(post(petResourceBaseUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(petJson))
                 .andExpect(status().isCreated)
@@ -131,7 +129,7 @@ class PetResourceTest : SpringBootTestBase() {
     fun `create pet owner not found`() {
         val petJson = getPetAsJson("Barry", "Dog", 12345, of(2020, FEBRUARY, 2))
 
-        mockMvc.perform(post("/api/pets")
+        mockMvc.perform(post(petResourceBaseUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(petJson))
                 .andExpect(status().isNotFound)
@@ -146,7 +144,7 @@ class PetResourceTest : SpringBootTestBase() {
         val millie = persistTestPet("Millie", "Dog")
         millie.birthDate = of(2018, JANUARY, 31)
 
-        mockMvc.perform(put("/api/pets")
+        mockMvc.perform(put(petResourceBaseUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(millie)))
                 .andExpect(status().isOk)
@@ -159,7 +157,7 @@ class PetResourceTest : SpringBootTestBase() {
     fun `update pet owner not found`() {
         val petJson = getPetAsJson("Barry", "Dog", 12345, of(2020, FEBRUARY, 2))
 
-        mockMvc.perform(put("/api/pets")
+        mockMvc.perform(put(petResourceBaseUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(petJson))
                 .andExpect(status().isNotFound)
@@ -170,13 +168,13 @@ class PetResourceTest : SpringBootTestBase() {
     fun `delete pet`() {
         val millie = persistTestPet("Millie", "Dog")
 
-        mockMvc.perform(delete("/api/pets/${millie.id}"))
+        mockMvc.perform(delete("$petResourceBaseUrl/${millie.id}"))
                 .andExpect(status().isNoContent)
     }
 
     @Test
     fun `delete pet not found`() {
-        mockMvc.perform(delete("/api/pets/77777"))
+        mockMvc.perform(delete("$petResourceBaseUrl/77777"))
                 .andExpect(status().isNotFound)
     }
 

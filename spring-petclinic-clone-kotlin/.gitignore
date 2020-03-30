@@ -25,4 +25,3 @@ target/
 build/
 
 .vscode/
-src/main/kotlin/com/ivk23/petclinic/kotlin/config/
