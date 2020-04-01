@@ -1,6 +1,7 @@
 package com.ivk23.petclinic.kotlin.api.v1
 
 import com.ivk23.petclinic.kotlin.api.Constants.Companion.API_V1_PREFIX
+import com.ivk23.petclinic.kotlin.audit.Metric
 import com.ivk23.petclinic.kotlin.model.Owner
 import com.ivk23.petclinic.kotlin.model.Pet
 import com.ivk23.petclinic.kotlin.service.PersonService
@@ -15,6 +16,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 
+@Metric // see KDoc (Javadoc)
 @Api(description = "This is Owner Resource API")
 @RestController
 @RequestMapping("/$API_V1_PREFIX/owners")
@@ -26,7 +28,8 @@ class OwnerResource(private val personService: PersonService) {
     }
 
     @ApiOperation(value = "Get All Owners.", response = List::class)
-    @ApiResponses(ApiResponse(code = 200, message = "List of owners returned. Or empty list if there are no data."))
+    @ApiResponses(ApiResponse(code = 200,
+            message = "List of owners returned. Or empty list if there are no data."))
     @GetMapping
     fun getAll() = personService.getAllOwners()
 
@@ -44,18 +47,25 @@ class OwnerResource(private val personService: PersonService) {
         return personService.create(owner)
     }
 
+    @ApiOperation(value = "Update Owner.")
     @PutMapping
     fun update(@Validated @RequestBody owner: Owner) = personService.update(owner)
 
+    @ApiOperation(value = "Update Owner. Only provided fields will be updated.",
+            response = Owner::class)
+    @ApiResponses(ApiResponse(code = 404, message = "Owner cannot be found by id provided."))
     @PatchMapping("/{id}")
     fun patch(@PathVariable("id") ownerId: Long,
               @RequestBody owner: Owner): Owner =
             personService.patch(ownerId, owner)
 
+    @ApiOperation(value = "Delete owner.")
+    @ApiResponses(ApiResponse(code = 404, message = "If you try to delete non-existed owner."))
     @DeleteMapping("/{id}")
     fun delete(@PathVariable("id") ownerId: Long) =
             personService.delete(ownerId)
 
+    @ApiOperation(value = "Get owner's pets list.")
     @GetMapping("/{id}/pets")
     fun getOwnerPets(@PathVariable("id") id: Long): Set<Pet> {
         return personService.getOwnerById(id).pets

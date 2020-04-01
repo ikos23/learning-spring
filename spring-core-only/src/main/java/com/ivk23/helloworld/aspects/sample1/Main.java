@@ -1,4 +1,4 @@
-package com.ivk23.helloworld.aspects;
+package com.ivk23.helloworld.aspects.sample1;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("default")
+@ActiveProfiles(value = ["default", "metrics"])
 abstract class SpringBootTestBase {
 
     @Autowired
