@@ -32,8 +32,8 @@ class PersonController(private val personService: PersonService) {
 
     @GetMapping("/persons/{id}/profile")
     fun redirectToProfile(
-        @PathVariable("id") id: Long,
-        @RequestParam("type") type: String
+            @PathVariable("id") id: Long,
+            @RequestParam("type") type: String
     ): String {
         return when (type) {
             "vet" -> "redirect:/vets/$id/profile"

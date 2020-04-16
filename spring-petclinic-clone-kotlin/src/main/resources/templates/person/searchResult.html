@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <title>Pet Clinic Persons</title>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/app.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/app.css}"/>
 
     <style>
         * {
@@ -14,6 +14,14 @@
 </head>
 <body>
 <div class="main-block">
+    <div class="nav-bar">
+        <ul>
+            <li><a th:href="@{'/'}">Home</a></li>
+            <li><a th:href="@{'/visits'}">Visits</a></li>
+            <li><a th:href="@{'/vets'}">Vets</a></li>
+            <li><a th:href="@{'/owners'}">Owners</a></li>
+        </ul>
+    </div>
     <div>
         <h2 th:text="${'Found ' + persons.size() + ' persons:'}">Found</h2>
     </div>

@@ -2,7 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Pet Clinic Index</title>
+    <!-- In case, we have Ajax calls, we can obtain CSRF from here :) -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <title>Pet Clinic Admin</title>
 
     <link rel="stylesheet" type="text/css" th:href="@{/styles/app.css}"/>
 </head>
@@ -14,17 +18,25 @@
             <li><a th:href="@{'/visits'}">Visits</a></li>
             <li><a th:href="@{'/vets'}">Vets</a></li>
             <li><a th:href="@{'/owners'}">Owners</a></li>
-            <li style="float:right"><a th:href="@{'/admin'}">Admin Console</a></li>
+            <li style="float:right"><a th:href="@{'/logout'}">Logout</a></li>
         </ul>
     </div>
     <div>
-        <h2 th:text="${'Welcome Dear User !'}">Hello Text</h2>
+        <h2 th:text="${'Admin Console'}">Admin Console</h2>
     </div>
     <div>
-        <h4 th:text="${'Currently ' + personsTotal + ' persons are registered in the system.'}">Persons count: -1</h4>
+        <h4>
+            This page is protected. Only logged in user has access.
+        </h4>
     </div>
-    <div class="nav">
-        <div th:text="${#dates.createNow()}">time</div>
+    <div>
+        <div>Who am I: <span th:text="${currentUser}"></span></div>
+        <div>Roles: <span th:text="${roles}"></span></div>
+    </div>
+    <div>
+        <div class="nav-item">
+            <a th:href="@{'/persons'}">Search person</a>
+        </div>
     </div>
     <div style="text-align: right">
         <img src="../static/assets/main-logo.jpg" th:src="@{/assets/main-logo.jpg}" width="300" height="240"/>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <title>Pet Clinic Persons</title>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/app.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/app.css}"/>
 
     <style>
         * {
@@ -25,13 +25,14 @@
     <div style="padding-left: 5px;">
         <div>
             <h2 th:text="${'List of persons'}">List of persons text</h2>
-            <a th:href="@{'/persons/createOwner'}">Add new owner</a>
         </div>
         <h4 th:text="${'You can also search person on this page.'}">Search text</h4>
         <div class="search-section">
             <form action="/persons/search" method="post" enctype="multipart/form-data">
                 <label for="firstName">First Name:</label> <input type="text" id="firstName" name="firstName" value=""/>
                 <label for="lastName">Last Name:</label> <input type="text" id="lastName" name="lastName" value="">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
                 <input type="submit" value="Search">
             </form>
         </div>
